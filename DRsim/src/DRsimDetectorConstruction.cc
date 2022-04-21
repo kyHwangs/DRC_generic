@@ -108,9 +108,9 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
 
   // fRandomSeed = 1;
 
-  doFiber     = true;
+  doFiber     = false;
   doReflector = false;
-  doPMT       = true;
+  doPMT       = false;
 
   fiberUnit   = new G4Box("fiber_SQ", (fFiberUnitH/2) *mm, (1./2) *mm, (fTowerDepth/2) *mm);
   fiberClad   = new G4Tubs("fiber",  0, clad_C_rMax, fTowerDepth/2., 0 *deg, 360. *deg);   // S is the same
@@ -125,7 +125,7 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
   dimCalc->SetNofModules(fNofModules);
   dimCalc->SetNofRow(fNofRow);
 
-  ModuleBuild(ModuleLogical,PMTGLogical,PMTfilterLogical,PMTcellLogical,PMTcathLogical,ReflectorMirrorLogical,fiberUnitIntersection,fiberCladIntersection,fiberCoreIntersection,fModuleProp);
+  ModuleBuild(ModuleLogical,HousingLogical,PMTGLogical,PMTfilterLogical,PMTcellLogical,PMTcathLogical,ReflectorMirrorLogical,fiberUnitIntersection,fiberCladIntersection,fiberCoreIntersection,fModuleProp);
 
   delete dimCalc;
   return worldPhysical;
@@ -136,30 +136,35 @@ void DRsimDetectorConstruction::ConstructSDandField() {
   G4String SiPMName = "SiPMSD";
 
   // ! Not a memory leak - SDs are deleted by G4SDManager. Deleting them manually will cause double delete!
-  if ( doPMT ) {
-    for (int i = 0; i < fNofModules; i++) {
-      DRsimSiPMSD* SiPMSDmodule = new DRsimSiPMSD("Module"+std::to_string(i), "ModuleC"+std::to_string(i), fModuleProp.at(i));
-      SDman->AddNewDetector(SiPMSDmodule);
-      PMTcathLogical[i]->SetSensitiveDetector(SiPMSDmodule);
-    }
-  }
+  // if ( doPMT ) {
+  //   for (int i = 0; i < fNofModules; i++) {
+  //     DRsimSiPMSD* SiPMSDmodule = new DRsimSiPMSD("Module"+std::to_string(i), "ModuleC"+std::to_string(i), fModuleProp.at(i));
+  //     SDman->AddNewDetector(SiPMSDmodule);
+  //     PMTcathLogical[i]->SetSensitiveDetector(SiPMSDmodule);
+  //   }
+  // }
 }
 
-void DRsimDetectorConstruction::ModuleBuild(G4LogicalVolume* ModuleLogical_[], 
+void DRsimDetectorConstruction::ModuleBuild(G4LogicalVolume* ModuleLogical_[], G4LogicalVolume* HousingLogical_[],
                                             G4LogicalVolume* PMTGLogical_[], G4LogicalVolume* PMTfilterLogical_[], G4LogicalVolume* PMTcellLogical_[], G4LogicalVolume* PMTcathLogical_[], 
                                             G4LogicalVolume* ReflectorMirrorLogical_[],
                                             std::vector<G4LogicalVolume*> fiberUnitIntersection_[], std::vector<G4LogicalVolume*> fiberCladIntersection_[], std::vector<G4LogicalVolume*> fiberCoreIntersection_[], 
                                             std::vector<DRsimInterface::DRsimModuleProperty>& ModuleProp_) {
 
-  for (int i = 0; i < fNofModules; i++) {    
+  // for (int i = 0; i < fNofModules; i++) {    
+  for (int i = 0; i < 1; i++) {    
     moduleName = setModuleName(i);
-    
-    dimCalc->SetisModule(true);
-    module = new G4Box("Mudule", (fModuleH/2.) *mm, (fModuleW/2.) *mm, (fTowerDepth/2.) *mm );
-    ModuleLogical_[i] = new G4LogicalVolume(module,FindMaterial("Copper"),moduleName);
-    // G4VPhysicalVolume* modulePhysical = new G4PVPlacement(0,dimCalc->GetOrigin(i),ModuleLogical_[i],moduleName,worldLogical,false,0,checkOverlaps);
-    new G4PVPlacement(0,dimCalc->GetOrigin(i),ModuleLogical_[i],moduleName,worldLogical,false,0,checkOverlaps);
 
+    dimCalc->SetisModule(true);
+    housing = new G4Box("Housing", ((fModuleH+2)/2.) *mm, ((fModuleW+2)/2.) *mm, (fTowerDepth/2.) *mm );
+    HousingLogical_[i] = new G4LogicalVolume(housing,FindMaterial("Copper"),moduleName);
+    new G4PVPlacement(0,dimCalc->GetOrigin(i),HousingLogical_[i],moduleName,worldLogical,false,0,checkOverlaps);
+
+    module = new G4Box("Mudule", (fModuleH/2.) *mm, (fModuleW/2.) *mm, (fTowerDepth/2.) *mm );
+    tModuleIntersection = new G4IntersectionSolid(moduleName,module,housing,0,G4ThreeVector(0.,0.,0.));
+    ModuleLogical_[i] = new G4LogicalVolume(tModuleIntersection,FindMaterial("Copper"),moduleName);
+    new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),ModuleLogical_[i],moduleName,HousingLogical_[i],false,0,checkOverlaps);
+    
     if ( doPMT ) {
       dimCalc->SetisModule(false);  
       pmtg = new G4Box("PMTG", (fModuleH/2.) *mm, (fModuleW/2.) *mm, (PMTT+filterT)/2. *mm );

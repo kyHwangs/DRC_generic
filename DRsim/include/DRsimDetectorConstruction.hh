@@ -40,7 +40,8 @@ private:
   G4Material* FindMaterial(G4String matName) { return fMaterials->GetMaterial(matName); }
   G4OpticalSurface* FindSurface(G4String surfName) { return fMaterials->GetOpticalSurface(surfName); }
 
-  void ModuleBuild(G4LogicalVolume* ModuleLogical_[], G4LogicalVolume* PMTGLogical_[], G4LogicalVolume* PMTfilterLogical_[], G4LogicalVolume* PMTcellLogical_[], G4LogicalVolume* PMTcathLogical_[],
+  void ModuleBuild(G4LogicalVolume* ModuleLogical_[], G4LogicalVolume* HousingLogical_[],
+                    G4LogicalVolume* PMTGLogical_[], G4LogicalVolume* PMTfilterLogical_[], G4LogicalVolume* PMTcellLogical_[], G4LogicalVolume* PMTcathLogical_[],
                     G4LogicalVolume* ReflectorMirrorLogical_[],
                     std::vector<G4LogicalVolume*> fiberUnitIntersection_[], std::vector<G4LogicalVolume*> fiberCladIntersection_[], std::vector<G4LogicalVolume*> fiberCoreIntersection_[], 
                     std::vector<DRsimInterface::DRsimModuleProperty>& towerProps_);
@@ -79,6 +80,7 @@ private:
 
   char name[20];
   G4String moduleName;
+  G4Box* housing;
   G4Box* module;
   G4Box* reflector;
   G4Box* pmtg;
@@ -89,10 +91,12 @@ private:
   G4Tubs* fiberCoreS;
   G4Tubs* fiberCoreC;
   
+  G4VSolid* tModuleIntersection;
   G4VSolid* tfiberUnitIntersection;
   G4VSolid* tfiberCladIntersection;
   G4VSolid* tfiberCoreIntersection;
 
+  G4LogicalVolume* HousingLogical[100];
   G4LogicalVolume* ModuleLogical[100];
 
   G4LogicalVolume* PMTGLogical[100];
