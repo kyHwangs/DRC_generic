@@ -77,3 +77,6 @@
 # Set visualization to accumulate events into one picture
 #
 #/vis/scene/endOfEventAction accumulate
+
+/vis/viewer/set/viewpointThetaPhi 180 0 deg
+/vis/viewer/zoomTo 1000

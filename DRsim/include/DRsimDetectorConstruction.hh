@@ -42,11 +42,11 @@ private:
 
   void ModuleBuild(G4LogicalVolume* ModuleLogical_[], G4LogicalVolume* PMTGLogical_[], G4LogicalVolume* PMTfilterLogical_[], G4LogicalVolume* PMTcellLogical_[], G4LogicalVolume* PMTcathLogical_[],
                     G4LogicalVolume* ReflectorMirrorLogical_[],
-                    std::vector<G4LogicalVolume*> fiberUnitIntersection_[], std::vector<G4LogicalVolume*> fiberCladIntersection_[], std::vector<G4LogicalVolume*> fiberCoreIntersection_[], 
+                    std::vector<G4LogicalVolume*> fiberUnitIntersection_[], std::vector<G4LogicalVolume*> fiberCladIntersection_[], std::vector<G4LogicalVolume*> fiberCoreIntersection_[], std::vector<G4LogicalVolume*> Cutube_[],
                     std::vector<DRsimInterface::DRsimModuleProperty>& towerProps_);
 
   void FiberImplement(G4int i, G4LogicalVolume* ModuleLogical__[], 
-                   std::vector<G4LogicalVolume*> fiberUnitIntersection__[], std::vector<G4LogicalVolume*> fiberCladIntersection__[], std::vector<G4LogicalVolume*> fiberCoreIntersection__[]);
+                   std::vector<G4LogicalVolume*> fiberUnitIntersection__[], std::vector<G4LogicalVolume*> fiberCladIntersection__[], std::vector<G4LogicalVolume*> fiberCoreIntersection__[], std::vector<G4LogicalVolume*> Cutube__[]);
 
   G4bool checkOverlaps;
   G4GenericMessenger* fMessenger;
@@ -104,6 +104,7 @@ private:
   vector<G4LogicalVolume*> fiberUnitIntersection[100];
   vector<G4LogicalVolume*> fiberCladIntersection[100];
   vector<G4LogicalVolume*> fiberCoreIntersection[100];
+  vector<G4LogicalVolume*> Cutube[100];
 
   DRsimInterface::hitXY fTowerXY;
   std::vector<DRsimInterface::DRsimModuleProperty> fModuleProp;

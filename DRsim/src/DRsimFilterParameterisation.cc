@@ -17,9 +17,12 @@ DRsimFilterParameterisation::DRsimFilterParameterisation(const G4int numx, const
     G4int column = copyNo / numy;
     G4int row = copyNo % numy;
 
+    double colIntv = 2* 23./21;
+    double rowIntv = 23./14;
+
     if ( !RecoInterface::IsCerenkov(column,row) ) {
-      fXFilter.push_back( -90.*mm/2 + column*1.5*mm + 0.75*mm );
-      fYFilter.push_back( -90.*mm/2 + row*1.5*mm + 0.75*mm );
+      fXFilter.push_back( -rowIntv*6.5 + column*rowIntv );
+      fYFilter.push_back( -colIntv*5. + row*colIntv );
     }
   }
   fNumx = numx;

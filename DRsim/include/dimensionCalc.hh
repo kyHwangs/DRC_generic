@@ -34,6 +34,7 @@ public:
   G4double GetY_PMTG(G4int i);
   G4double GetZ_PMTG(G4int i);
   G4ThreeVector GetOrigin_Reflector(G4int i);
+  G4RotationMatrix* GetRM(G4double i);
 
 private:
 

@@ -13,9 +13,12 @@ DRsimCellParameterisation::DRsimCellParameterisation(const G4int numx, const G4i
   for (G4int copyNo = 0; copyNo < numx * numy; copyNo++ ) {
     G4int column = copyNo / numy;
     G4int row = copyNo % numy;
+
+    double colIntv = 2* 23./21;
+    double rowIntv = 23./14;
     
-    fXCell.push_back( -90.*mm/2 + column*1.5*mm + 0.75*mm );
-    fYCell.push_back( -90.*mm/2 + row*1.5*mm + 0.75*mm );
+    fXCell.push_back( -rowIntv*6.5 + column*rowIntv );
+    fYCell.push_back( -colIntv*5. + row*colIntv );
   }
   fNumx = numx;
   fNumy = numy;

@@ -48,3 +48,11 @@ G4ThreeVector dimensionCalc::GetOrigin_Reflector(G4int i) {
 
   return G4ThreeVector( -90 * (double)fNofRow/2. + row * 90 + 45, -90 * (double)fNofRow/2. + col * 90 + 45, fFrontL - fReflectorT/2);
 }
+
+G4RotationMatrix* dimensionCalc::GetRM(G4double i) {
+
+  G4RotationMatrix* RotMatrix = new G4RotationMatrix();
+  RotMatrix->rotateX(3.14159265358979323846 * (i/180));
+
+  return RotMatrix;
+}
