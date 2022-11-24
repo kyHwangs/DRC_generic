@@ -27,7 +27,7 @@ using namespace std;
 G4ThreadLocal DRsimMagneticField* DRsimDetectorConstruction::fMagneticField = 0;
 G4ThreadLocal G4FieldManager* DRsimDetectorConstruction::fFieldMgr = 0;
 
-int DRsimDetectorConstruction::fNofRow = 7;
+int DRsimDetectorConstruction::fNofRow = 1;
 int DRsimDetectorConstruction::fNofModules = fNofRow * fNofRow;
 
 DRsimDetectorConstruction::DRsimDetectorConstruction()
@@ -99,10 +99,10 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
   worldLogical                     = new G4LogicalVolume(worldSolid,FindMaterial("G4_Galactic"),"worldLogical");
   G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0,G4ThreeVector(),worldLogical,"worldPhysical",0,false,0,checkOverlaps);
 
-  fFrontL     = 1500.;     // NOTE :: Length from the center of world box to center of module
-  fTowerDepth = 2500.; 
-  fModuleH    = 90;
-  fModuleW    = 90;
+  fFrontL     = 0.;
+  fTowerDepth = 100.; 
+  fModuleH    = 22.5;
+  fModuleW    = 23;
   fFiberUnitH = 1.;
 
 
@@ -233,8 +233,8 @@ void DRsimDetectorConstruction::FiberImplement(G4int i, G4LogicalVolume* ModuleL
   fFiberY.clear();
   fFiberWhich.clear();
 
-  int NofFiber = 60;   
-  int NofPlate = 60;   
+  int NofFiber = 15;   
+  int NofPlate = 15;   
   double randDeviation = 0.; //  double randDeviation = fFiberUnitH - 1.;
   fTowerXY = std::make_pair(NofPlate,NofFiber);
   
@@ -244,8 +244,8 @@ void DRsimDetectorConstruction::FiberImplement(G4int i, G4LogicalVolume* ModuleL
       /*
         ? fX : # of plate , fY : # of fiber in the plate
       */
-      G4float fX = -90.*mm/2 + k*1.5*mm + 0.75*mm;
-      G4float fY = -90.*mm/2 + j*1.5*mm + 0.75*mm;
+      G4float fX = -23.*mm/2 + k*1.5*mm + 1.25*mm;
+      G4float fY = -23.*mm/2 + j*1.5*mm + 1.*mm;
       fWhich = !fWhich;
       fFiberX.push_back(fX);
       fFiberY.push_back(fY);
