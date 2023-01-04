@@ -74,6 +74,7 @@ private:
   G4bool doFiber;
   G4bool doReflector;
   G4bool doPMT;
+  G4bool doPMTG;
 
   dimensionCalc* dimCalc;
 

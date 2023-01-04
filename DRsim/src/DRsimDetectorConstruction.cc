@@ -100,9 +100,9 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
   G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0,G4ThreeVector(),worldLogical,"worldPhysical",0,false,0,checkOverlaps);
 
   fFrontL     = 0.;
-  fTowerDepth = 100.; 
-  fModuleH    = 22.5;
-  fModuleW    = 23;
+  fTowerDepth = 3000.; 
+  fModuleH    = 1001;
+  fModuleW    = 1001;
   fFiberUnitH = 1.;
 
 
@@ -111,6 +111,7 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
   doFiber     = true;
   doReflector = false;
   doPMT       = true;
+  doPMTG      = true;
 
   fiberUnit   = new G4Box("fiber_SQ", (fFiberUnitH/2) *mm, (1./2) *mm, (fTowerDepth/2) *mm);
   fiberClad   = new G4Tubs("fiber",  0, clad_C_rMax, fTowerDepth/2., 0 *deg, 360. *deg);   // S is the same
@@ -156,11 +157,11 @@ void DRsimDetectorConstruction::ModuleBuild(G4LogicalVolume* ModuleLogical_[],
     
     dimCalc->SetisModule(true);
     module = new G4Box("Mudule", (fModuleH/2.) *mm, (fModuleW/2.) *mm, (fTowerDepth/2.) *mm );
-    ModuleLogical_[i] = new G4LogicalVolume(module,FindMaterial("Copper"),moduleName);
+    ModuleLogical_[i] = new G4LogicalVolume(module,FindMaterial("Aluminum"),moduleName);
     // G4VPhysicalVolume* modulePhysical = new G4PVPlacement(0,dimCalc->GetOrigin(i),ModuleLogical_[i],moduleName,worldLogical,false,0,checkOverlaps);
     new G4PVPlacement(0,dimCalc->GetOrigin(i),ModuleLogical_[i],moduleName,worldLogical,false,0,checkOverlaps);
 
-    if ( doPMT ) {
+    if ( doPMTG ) {
       dimCalc->SetisModule(false);  
       pmtg = new G4Box("PMTG", (fModuleH/2.) *mm, (fModuleW/2.) *mm, (PMTT+filterT)/2. *mm );
       PMTGLogical_[i]  = new G4LogicalVolume(pmtg,FindMaterial("G4_AIR"),moduleName);
@@ -233,8 +234,8 @@ void DRsimDetectorConstruction::FiberImplement(G4int i, G4LogicalVolume* ModuleL
   fFiberY.clear();
   fFiberWhich.clear();
 
-  int NofFiber = 15;   
-  int NofPlate = 15;   
+  int NofFiber = 834;   
+  int NofPlate = 834;   
   double randDeviation = 0.; //  double randDeviation = fFiberUnitH - 1.;
   fTowerXY = std::make_pair(NofPlate,NofFiber);
   
@@ -244,8 +245,8 @@ void DRsimDetectorConstruction::FiberImplement(G4int i, G4LogicalVolume* ModuleL
       /*
         ? fX : # of plate , fY : # of fiber in the plate
       */
-      G4float fX = -23.*mm/2 + k*1.5*mm + 1.25*mm;
-      G4float fY = -23.*mm/2 + j*1.5*mm + 1.*mm;
+      G4float fX = -1001.*mm/2 + k*1.2*mm + 0.7*mm;
+      G4float fY = -1001.*mm/2 + j*1.2*mm + 0.7*mm;
       fWhich = !fWhich;
       fFiberX.push_back(fX);
       fFiberY.push_back(fY);

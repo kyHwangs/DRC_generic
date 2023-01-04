@@ -18,8 +18,8 @@ DRsimFilterParameterisation::DRsimFilterParameterisation(const G4int numx, const
     G4int row = copyNo % numy;
 
     if ( !RecoInterface::IsCerenkov(column,row) ) {
-      fXFilter.push_back( -23.*mm/2 + column*1.5*mm + 1.25*mm );
-      fYFilter.push_back( -23.*mm/2 + row*1.5*mm + 1.*mm );
+      fXFilter.push_back( -1001.*mm/2 + column*1.2*mm + 0.7*mm );
+      fYFilter.push_back( -1001.*mm/2 + row*1.2*mm + 0.7*mm );
     }
   }
   fNumx = numx;
