@@ -6,6 +6,7 @@
 #include "G4SDManager.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTypes.hh"
+#include "G4VProcess.hh"
 
 using namespace std;
 
@@ -36,6 +37,14 @@ G4bool DRsimSiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*) {
   G4int nofHits = fHitCollection->entries();
   G4double hitTime = step->GetPostStepPoint()->GetGlobalTime();
   G4double energy = step->GetTrack()->GetTotalEnergy();
+
+  auto fiberMat = step->GetTrack()->GetLogicalVolumeAtVertex()->GetMaterial()->GetName();
+  auto vtxG4 = step->GetTrack()->GetVertexPosition();
+  // TVector3 mcVtx(vtxG4.x(), vtxG4.y(), vtxG4.z());
+  auto vtxName =  step->GetTrack()->GetCreatorProcess()->GetProcessName();
+
+  std::cout << "READ : " << fiberMat << " | CREATION : " << vtxName << std::endl;
+
 
   DRsimSiPMHit* hit = NULL;
 
