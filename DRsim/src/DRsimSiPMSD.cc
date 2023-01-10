@@ -1,3 +1,4 @@
+#include "RecoInterface.h"
 #include "DRsimSiPMSD.hh"
 #include "DRsimSiPMHit.hh"
 #include "DRsimDetectorConstruction.hh"
@@ -38,12 +39,19 @@ G4bool DRsimSiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*) {
   G4double hitTime = step->GetPostStepPoint()->GetGlobalTime();
   G4double energy = step->GetTrack()->GetTotalEnergy();
 
-  auto fiberMat = step->GetTrack()->GetLogicalVolumeAtVertex()->GetMaterial()->GetName();
+  G4int column = SiPMnum / 834;
+  G4int row = SiPMnum % 834;
+  G4String matName = "scintillation fiber";
+
+  if ( RecoInterface::IsCerenkov(column,row) )
+    matName = "cerenkov fier";
+		
+  // auto fiberMat = step->GetTrack()->GetLogicalVolumeAtVertex()->GetMaterial()->GetName();
   auto vtxG4 = step->GetTrack()->GetVertexPosition();
   // TVector3 mcVtx(vtxG4.x(), vtxG4.y(), vtxG4.z());
   auto vtxName =  step->GetTrack()->GetCreatorProcess()->GetProcessName();
 
-  std::cout << "READ : " << fiberMat << " | CREATION : " << vtxName << std::endl;
+  std::cout << "READ : " << matName << " | CREATION : " << vtxName << std::endl;
 
 
   DRsimSiPMHit* hit = NULL;
