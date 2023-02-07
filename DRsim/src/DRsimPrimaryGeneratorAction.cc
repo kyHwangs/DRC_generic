@@ -91,16 +91,34 @@ void DRsimPrimaryGeneratorAction::GeneratePrimaries(G4Event* event) {
   // G4double y = (G4UniformRand()-0.5)*fRandY + fY_0;
   // G4double z = 0;
 
-  G4double x = (G4UniformRand()-0.5)*fRandX + fX_0;
-  G4double y = (G4UniformRand()-0.5)*fRandY + fY_0;
-  G4double z = (G4UniformRand()-0.5)*fRandZ + fZ_0;
+  G4double x = fX_0;
+  G4double y = fY_0;
+
+  G4double xRand;
+  G4double yRand;
+
+  while(true) {
+    xRand = 2 * (G4UniformRand() - 0.5) * fRandX;
+    yRand = 2 * (G4UniformRand() - 0.5) * fRandY;
+
+    if ( std::sqrt( xRand * xRand + yRand * yRand ) < 10 )
+      break;
+  }
+
+  x += xRand;
+  y += yRand;
+
+  G4double z = fZ_0;
+
+  // std::cout << x << " " << y << " " << std::sqrt( xRand * xRand + yRand * yRand ) << " " << z << std::endl;
+
   fOrg.set(x,y,z);
 
   fParticleGun->SetParticlePosition(fOrg); // http://www.apc.univ-paris7.fr/~franco/g4doxy/html/classG4VPrimaryGenerator.html
 
-  fDirection.setREtaPhi(1.,0.,0.);
-  fDirection.rotateY( -M_PI * ((90 - fTheta)/180) );
-  fDirection.rotateZ( M_PI * (fPhi/180.) );
+  fDirection.setRThetaPhi(1.,0.,0.);
+  // fDirection.rotateY( -M_PI * ((90 - fTheta)/180) );
+  // fDirection.rotateZ( M_PI * (fPhi/180.) );
 
   fParticleGun->SetParticleMomentumDirection(fDirection);
 
