@@ -7,18 +7,20 @@
 #include "G4VisAttributes.hh"
 #include "G4Colour.hh"
 
-DRsimCellParameterisation::DRsimCellParameterisation(const G4int numx, const G4int numy)
+DRsimCellParameterisation::DRsimCellParameterisation(std::vector<G4float>& x, std::vector<G4float>& y, std::vector<G4bool>& which)
 : G4VPVParameterisation()
 {
-  for (G4int copyNo = 0; copyNo < numx * numy; copyNo++ ) {
-    G4int column = copyNo / numy;
-    G4int row = copyNo % numy;
+  for ( G4int copyNo = 0; copyNo < which.size(); copyNo++ ) {
+    // G4int column = copyNo / numy;
+    // G4int row = copyNo % numy;
     
-    fXCell.push_back( -23.*mm/2 + column*1.5*mm + 1.25*mm );
-    fYCell.push_back( -23.*mm/2 + row*1.5*mm + 1.*mm );
+    // fXCell.push_back( -23.*mm/2 + column*1.5*mm + 1.25*mm );
+    // fYCell.push_back( -23.*mm/2 + row*1.5*mm + 1.*mm );
+    fXCell.push_back( x.at(copyNo) * mm );
+    fYCell.push_back( y.at(copyNo) * mm );
   }
-  fNumx = numx;
-  fNumy = numy;
+  // fNumx = numx;
+  // fNumy = numy;
 }
 
 DRsimCellParameterisation::~DRsimCellParameterisation()

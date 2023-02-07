@@ -66,6 +66,9 @@ private:
   G4double fModuleW;
   G4double fFiberUnitH;
   G4int fRandomSeed;
+  std::vector<G4double> fModuleHvec;
+  std::vector<G4double> fModuleWvec;
+  std::vector<G4bool> fWhichvec;
 
   G4double PMTT;
   G4double filterT;
