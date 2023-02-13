@@ -181,11 +181,12 @@ void DRsimMaterials::CreateMaterials() {
   fSiPMSurf = new G4OpticalSurface("SiPMSurf",glisur,polished,dielectric_metal);
   fSiPMSurf->SetMaterialPropertiesTable(mpSiPM);
 
-  G4double filterEff[nEnt] = {
-    0.913, 0.913, 0.913, 0.913, 0.913, 0.913, 0.913, 0.913, 
-    0.913, 0.912, 0.910, 0.907, 0.904, 0.899, 0.884, 0.692, 
-    0.015, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000
-  };
+  G4double filterEff[nEnt]; std::fill_n(filterEff, nEnt, 1.);
+  // G4double filterEff[nEnt] = {
+  //   0.913, 0.913, 0.913, 0.913, 0.913, 0.913, 0.913, 0.913, 
+  //   0.913, 0.912, 0.910, 0.907, 0.904, 0.899, 0.884, 0.692, 
+  //   0.015, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000
+  // };
   
   G4double filterRef[nEnt]; std::fill_n(filterRef,nEnt,0.);
   G4double RI_gel[nEnt]; std::fill_n(RI_gel,nEnt,1.52);
