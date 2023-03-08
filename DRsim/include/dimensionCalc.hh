@@ -25,6 +25,9 @@ public:
   void SetReflectorT(G4double ReflectorT) { fReflectorT = ReflectorT; }
   void SetisModule(G4bool isModule) { fisModule = isModule; }
 
+  void SetModuleHeight(G4double ModuleHeight) { fModuleHeight = ModuleHeight; }
+  void SetModuleWidth(G4double ModuleWidth) { fModuleWidth = ModuleWidth; }
+
   G4ThreeVector GetOrigin(G4int i);
   G4double GetX(G4int i);
   G4double GetY(G4int i);
@@ -44,6 +47,8 @@ private:
   G4double fFrontL;
   G4double fPMTT;
   G4double fReflectorT;
+  G4double fModuleHeight;
+  G4double fModuleWidth;
   G4bool fisModule;
 
   G4double x,y,z;

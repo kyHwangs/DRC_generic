@@ -19,6 +19,8 @@
 
 #include "dimensionCalc.hh"
 
+#include <math.h>
+
 using namespace std;
 
 class DRsimMagneticField;
@@ -66,6 +68,9 @@ private:
   G4double fModuleW;
   G4double fFiberUnitH;
   G4int fRandomSeed;
+
+  G4double fBottomEdge;
+  G4double fLeftEdge;
 
   G4double PMTT;
   G4double filterT;

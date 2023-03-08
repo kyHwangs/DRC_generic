@@ -10,7 +10,7 @@ class G4VPhysicalVolume;
 
 class DRsimFilterParameterisation : public G4VPVParameterisation {
 public:
-  DRsimFilterParameterisation(const G4int numx, const G4int numy);
+  DRsimFilterParameterisation(std::vector<G4float>& x, std::vector<G4float>& y, std::vector<G4bool>& which);
   virtual ~DRsimFilterParameterisation();
 
   virtual void ComputeTransformation(const G4int copyNo, G4VPhysicalVolume* physVol) const;

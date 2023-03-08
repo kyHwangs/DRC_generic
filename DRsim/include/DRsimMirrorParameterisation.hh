@@ -10,7 +10,7 @@ class G4VPhysicalVolume;
 
 class DRsimMirrorParameterisation : public G4VPVParameterisation {
 public:
-  DRsimMirrorParameterisation(const G4int numx, const G4int numy);
+  DRsimMirrorParameterisation(std::vector<G4float>& x, std::vector<G4float>& y, std::vector<G4bool>& which);
   virtual ~DRsimMirrorParameterisation();
 
   virtual void ComputeTransformation(const G4int copyNo, G4VPhysicalVolume* physVol) const;

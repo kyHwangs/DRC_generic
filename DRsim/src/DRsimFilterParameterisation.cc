@@ -9,21 +9,18 @@
 #include "G4VisAttributes.hh"
 #include "G4Colour.hh"
 
-DRsimFilterParameterisation::DRsimFilterParameterisation(const G4int numx, const G4int numy)
+DRsimFilterParameterisation::DRsimFilterParameterisation(std::vector<G4float>& x, std::vector<G4float>& y, std::vector<G4bool>& which)
 : G4VPVParameterisation()
 {
-  for ( G4int copyNo = 0; copyNo < numx*numy; copyNo++ ) {
+  for (G4int copyNo = 0; copyNo < which.size(); copyNo++ ) {
 
-    G4int column = copyNo / numy;
-    G4int row = copyNo % numy;
-
-    if ( !RecoInterface::IsCerenkov(column,row) ) {
-      fXFilter.push_back( -23.*mm/2 + column*1.5*mm + 1.25*mm );
-      fYFilter.push_back( -23.*mm/2 + row*1.5*mm + 1.*mm );
+    if ( which.at(copyNo) ) {
+      fXFilter.push_back( x.at(copyNo) );
+      fYFilter.push_back( y.at(copyNo) );
     }
   }
-  fNumx = numx;
-  fNumy = numy;
+  // fNumx = numx;
+  // fNumy = numy;
 }
 
 DRsimFilterParameterisation::~DRsimFilterParameterisation() {}

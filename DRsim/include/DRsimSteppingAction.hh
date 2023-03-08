@@ -29,6 +29,11 @@ private:
     if (towerName.find("2") != std::string::npos) return 2;
     if (towerName.find("3") != std::string::npos) return 3;
     if (towerName.find("4") != std::string::npos) return 4;
+    if (towerName.find("5") != std::string::npos) return 5;
+    if (towerName.find("6") != std::string::npos) return 6;
+    if (towerName.find("7") != std::string::npos) return 7;
+    if (towerName.find("8") != std::string::npos) return 8;
+    if (towerName.find("9") != std::string::npos) return 9;
 
   }
 };

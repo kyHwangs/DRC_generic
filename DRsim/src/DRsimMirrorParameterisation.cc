@@ -9,21 +9,16 @@
 #include "G4VisAttributes.hh"
 #include "G4Colour.hh"
 
-DRsimMirrorParameterisation::DRsimMirrorParameterisation(const G4int numx, const G4int numy)
+DRsimMirrorParameterisation::DRsimMirrorParameterisation(std::vector<G4float>& x, std::vector<G4float>& y, std::vector<G4bool>& which)
 : G4VPVParameterisation()
 {
-  for ( G4int copyNo = 0; copyNo < numx*numy; copyNo++ ) {
+  for (G4int copyNo = 0; copyNo < which.size(); copyNo++ ) {
 
-    G4int column = copyNo / numy;
-    G4int row = copyNo % numy;
-
-    if ( RecoInterface::IsCerenkov(column,row) ) {
-      fXMirror.push_back( -23.*mm/2 + column*1.5*mm + 1.25*mm );
-      fYMirror.push_back( -23.*mm/2 + row*1.5*mm + 1.*mm );
+    if ( !which.at(copyNo) ) {
+      fXMirror.push_back( x.at(copyNo) );
+      fYMirror.push_back( y.at(copyNo) );
     }
   }
-  fNumx = numx;
-  fNumy = numy;
 }
 
 DRsimMirrorParameterisation::~DRsimMirrorParameterisation() {}
