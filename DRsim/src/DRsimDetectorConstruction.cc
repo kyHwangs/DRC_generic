@@ -27,7 +27,7 @@ using namespace std;
 G4ThreadLocal DRsimMagneticField* DRsimDetectorConstruction::fMagneticField = 0;
 G4ThreadLocal G4FieldManager* DRsimDetectorConstruction::fFieldMgr = 0;
 
-int DRsimDetectorConstruction::fNofRow = 3;
+int DRsimDetectorConstruction::fNofRow = 1;
 int DRsimDetectorConstruction::fNofModules = fNofRow * fNofRow;
 
 DRsimDetectorConstruction::DRsimDetectorConstruction()
@@ -99,14 +99,20 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
   worldLogical                     = new G4LogicalVolume(worldSolid,FindMaterial("G4_Galactic"),"worldLogical");
   G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0,G4ThreeVector(),worldLogical,"worldPhysical",0,false,0,checkOverlaps);
 
-  float moduleUnitDimension = 122.;
+  float moduleUnitDimension = 2250.;
 
   fFrontL     = 0.;
-  fTowerDepth = 500.; 
+  fTowerDepth = 1000.; 
   fModuleH    = moduleUnitDimension;
   fModuleW    = moduleUnitDimension;
   fFiberUnitH = 1.;
+  fFiberUnitW = 1.;
+  fSiPMUnit   = 1.;
 
+  UnitMultiplier(50);
+
+  fSiPMUnitDim = fSiPMUnit + 0.2;
+  fCellUnit    = fFiberUnitH * 1.5;
 
   // fRandomSeed = 1;
 
@@ -114,7 +120,7 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
   doReflector = false;
   doPMT       = true;
 
-  fiberUnit   = new G4Box("fiber_SQ", (fFiberUnitH/2) *mm, (1./2) *mm, (fTowerDepth/2) *mm);
+  fiberUnit   = new G4Box("fiber_SQ", (fFiberUnitH/2.) *mm, (fFiberUnitW/2.) *mm, (fTowerDepth/2.) *mm);
   fiberClad   = new G4Tubs("fiber",  0, clad_C_rMax, fTowerDepth/2., 0 *deg, 360. *deg);   // S is the same
   fiberCoreC  = new G4Tubs("fiberC", 0, core_C_rMax, fTowerDepth/2., 0 *deg, 360. *deg);
   fiberCoreS  = new G4Tubs("fiberS", 0, core_S_rMax, fTowerDepth/2., 0 *deg, 360. *deg);
@@ -187,19 +193,19 @@ void DRsimDetectorConstruction::ModuleBuild(G4LogicalVolume* ModuleLogical_[],
       G4LogicalVolume* filterlayerLogical = new G4LogicalVolume(filterlayerSolid,FindMaterial("Glass"),"filterlayerLogical");
       new G4PVPlacement(0,G4ThreeVector(0.,0.,-PMTT/2.),filterlayerLogical,"filterlayerPhysical",PMTGLogical_[i],false,0,checkOverlaps);
 
-      G4VSolid* PMTcellSolid = new G4Box("PMTcellSolid", 1.2/2. *mm, 1.2/2. *mm, PMTT/2. *mm );
+      G4VSolid* PMTcellSolid = new G4Box("PMTcellSolid", fSiPMUnit/2. *mm, fSiPMUnit/2. *mm, PMTT/2. *mm );
       PMTcellLogical_[i] = new G4LogicalVolume(PMTcellSolid,FindMaterial("Glass"),"PMTcellLogical_");
 
       // DRsimCellParameterisation* PMTcellParam = new DRsimCellParameterisation(fTowerXY.first,fTowerXY.second);
       DRsimCellParameterisation* PMTcellParam = new DRsimCellParameterisation(fFiberX, fFiberY, fFiberWhich);
       G4PVParameterised* PMTcellPhysical = new G4PVParameterised("PMTcellPhysical",PMTcellLogical_[i],SiPMlayerLogical,kXAxis,fTowerXY.first*fTowerXY.second,PMTcellParam);
 
-      G4VSolid* PMTcathSolid = new G4Box("PMTcathSolid", 1.2/2. *mm, 1.2/2. *mm, filterT/2. *mm );
+      G4VSolid* PMTcathSolid = new G4Box("PMTcathSolid", fSiPMUnit/2. *mm, fSiPMUnit/2. *mm, filterT/2. *mm );
       PMTcathLogical_[i] = new G4LogicalVolume(PMTcathSolid,FindMaterial("Silicon"),"PMTcathLogical_");
       new G4PVPlacement(0,G4ThreeVector(0.,0.,(PMTT-filterT)/2.*mm),PMTcathLogical_[i],"PMTcathPhysical",PMTcellLogical_[i],false,0,checkOverlaps);
       new G4LogicalSkinSurface("Photocath_surf",PMTcathLogical_[i],FindSurface("SiPMSurf"));
 
-      G4VSolid* filterSolid = new G4Box("filterSolid", 1.2/2. *mm, 1.2/2. *mm, filterT/2. *mm );
+      G4VSolid* filterSolid = new G4Box("filterSolid", fSiPMUnit/2. *mm, fSiPMUnit/2. *mm, filterT/2. *mm );
       PMTfilterLogical_[i] = new G4LogicalVolume(filterSolid,FindMaterial("Gelatin"),"PMTfilterLogical_");
 
       int filterNo = (int)(fTowerXY.first * fTowerXY.second) / 2;
@@ -220,7 +226,7 @@ void DRsimDetectorConstruction::ModuleBuild(G4LogicalVolume* ModuleLogical_[],
       G4LogicalVolume* ReflectorlayerLogical = new G4LogicalVolume(ReflectorlayerSolid,FindMaterial("G4_Galactic"),"ReflectorlayerLogical");
       new G4PVPlacement(0,dimCalc->GetOrigin_Reflector(i),ReflectorlayerLogical,"ReflectorlayerPhysical",worldLogical,false,0,checkOverlaps);
 
-      G4VSolid* mirrorSolid = new G4Box("mirrorSolid", 1.2/2. *mm, 1.2/2. *mm, reflectorT/2. *mm );
+      G4VSolid* mirrorSolid = new G4Box("mirrorSolid", fSiPMUnit/2. *mm, fSiPMUnit/2. *mm, reflectorT/2. *mm );
       ReflectorMirrorLogical_[i] = new G4LogicalVolume(mirrorSolid,FindMaterial("Aluminum"),"ReflectorMirrorLogical_");
 
       // DRsimMirrorParameterisation* mirrorParam = new DRsimMirrorParameterisation(fTowerXY.first,fTowerXY.second);
@@ -244,10 +250,10 @@ void DRsimDetectorConstruction::FiberImplement(G4int i, G4LogicalVolume* ModuleL
   fFiberY.clear();
   fFiberWhich.clear();
 
-  int NofFiber = (int)(fModuleW / 1.5);   
-  int NofPlate = (int)(fModuleH / 1.5);
-  fBottomEdge = fmod(fModuleW, 1.5) / 2.;
-  fLeftEdge = fmod(fModuleH, 1.5) / 2.;
+  int NofFiber = (int)(fModuleW / fCellUnit);   
+  int NofPlate = (int)(fModuleH / fCellUnit);
+  fBottomEdge = fmod(fModuleW, fCellUnit) / 2.;
+  fLeftEdge = fmod(fModuleH, fCellUnit) / 2.;
 
   double randDeviation = 0.; //  double randDeviation = fFiberUnitH - 1.;
   fTowerXY = std::make_pair(NofPlate,NofFiber);
@@ -258,8 +264,8 @@ void DRsimDetectorConstruction::FiberImplement(G4int i, G4LogicalVolume* ModuleL
       /*
         ? fX : # of plate , fY : # of fiber in the plate
       */
-      G4float fX = -fModuleH*mm/2 + k*1.5*mm + 0.75*mm + fBottomEdge*mm;
-      G4float fY = -fModuleW*mm/2 + j*1.5*mm + 0.75*mm + fLeftEdge*mm;
+      G4float fX = -fModuleH *mm / 2. + k * fCellUnit *mm + fCellUnit / 2. *mm + fBottomEdge *mm;
+      G4float fY = -fModuleW *mm / 2. + j * fCellUnit *mm + fCellUnit / 2. *mm + fLeftEdge *mm;
       fWhich = !fWhich;
       fFiberX.push_back(fX);
       fFiberY.push_back(fY);

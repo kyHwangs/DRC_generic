@@ -67,6 +67,10 @@ private:
   G4double fModuleH;
   G4double fModuleW;
   G4double fFiberUnitH;
+  G4double fFiberUnitW;
+  G4double fSiPMUnit;
+  G4double fSiPMUnitDim;
+  G4double fCellUnit;
   G4int fRandomSeed;
 
   G4double fBottomEdge;
@@ -145,6 +149,18 @@ private:
 
   G4String setModuleName(int i) {
     return "Module" + std::to_string(i);
+  }
+
+  void UnitMultiplier(float i ) {
+    clad_C_rMax *= i;
+    clad_C_rMin *= i;
+    core_C_rMax *= i;
+    clad_S_rMin *= i;
+    clad_S_rMax *= i;
+    core_S_rMax *= i;
+    fFiberUnitH *= i;
+    fFiberUnitW *= i;
+    fSiPMUnit *= i;
   }
 };
 
