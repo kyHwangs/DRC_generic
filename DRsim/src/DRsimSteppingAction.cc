@@ -42,6 +42,8 @@ void DRsimSteppingAction::UserSteppingAction(const G4Step* step) {
   G4VPhysicalVolume* motherTower = GetMotherTower(theTouchable);
   fEdep.ModuleNum = GetModuleNum(motherTower->GetName());
 
+  // std::cout << motherTower->GetName() << " " << fEdep.ModuleNum << std::endl;
+
   G4double pdgCharge = particle->GetPDGCharge();
 
   fEdep.Edep = step->GetTotalEnergyDeposit();

@@ -102,7 +102,7 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
   float moduleUnitDimension = 122.;
 
   fFrontL     = 0.;
-  fTowerDepth = 500.; 
+  fTowerDepth = 100.; 
   fModuleH    = moduleUnitDimension;
   fModuleW    = moduleUnitDimension;
   fFiberUnitH = 1.;

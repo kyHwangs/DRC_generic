@@ -25,6 +25,7 @@ private:
 
   G4int GetModuleNum(G4String towerName) {
     
+    if (towerName.find("0") != std::string::npos) return 0;
     if (towerName.find("1") != std::string::npos) return 1;
     if (towerName.find("2") != std::string::npos) return 2;
     if (towerName.find("3") != std::string::npos) return 3;
@@ -35,6 +36,7 @@ private:
     if (towerName.find("8") != std::string::npos) return 8;
     if (towerName.find("9") != std::string::npos) return 9;
 
+    return 9999;
   }
 };
 
