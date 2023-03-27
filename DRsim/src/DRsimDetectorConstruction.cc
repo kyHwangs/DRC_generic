@@ -27,7 +27,7 @@ using namespace std;
 G4ThreadLocal DRsimMagneticField* DRsimDetectorConstruction::fMagneticField = 0;
 G4ThreadLocal G4FieldManager* DRsimDetectorConstruction::fFieldMgr = 0;
 
-int DRsimDetectorConstruction::fNofRow = 3;
+int DRsimDetectorConstruction::fNofRow = 1;
 int DRsimDetectorConstruction::fNofModules = fNofRow * fNofRow;
 
 DRsimDetectorConstruction::DRsimDetectorConstruction()
@@ -112,7 +112,7 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
 
   doFiber     = true;
   doReflector = false;
-  doPMT       = true;
+  doPMT       = false;
 
   fiberUnit   = new G4Box("fiber_SQ", (fFiberUnitH/2) *mm, (1./2) *mm, (fTowerDepth/2) *mm);
   fiberClad   = new G4Tubs("fiber",  0, clad_C_rMax, fTowerDepth/2., 0 *deg, 360. *deg);   // S is the same
@@ -248,6 +248,8 @@ void DRsimDetectorConstruction::FiberImplement(G4int i, G4LogicalVolume* ModuleL
   int NofPlate = (int)(fModuleH / 1.5);
   fBottomEdge = fmod(fModuleW, 1.5) / 2.;
   fLeftEdge = fmod(fModuleH, 1.5) / 2.;
+
+  std::cout << "NofFiber : " << NofFiber << " | NofPlate : " << NofPlate << std::endl;
 
   double randDeviation = 0.; //  double randDeviation = fFiberUnitH - 1.;
   fTowerXY = std::make_pair(NofPlate,NofFiber);

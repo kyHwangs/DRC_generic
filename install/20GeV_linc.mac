@@ -11,9 +11,8 @@
 /DRsim/generator/theta 1.5
 /DRsim/generator/phi 1.
 
-
-/DRsim/generator/x0 1.3093
-/DRsim/generator/y0 0.87275
+/DRsim/generator/x0 -1.3093
+/DRsim/generator/y0 -0.87275
 /DRsim/generator/z0 -50
 
 /DRsim/generator/randx 10
