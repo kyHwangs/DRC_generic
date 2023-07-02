@@ -6,6 +6,8 @@
 #include "G4ThreeVector.hh"
 #include "G4RotationMatrix.hh"
 
+#include "TMath.h"
+
 #include "globals.hh"
 #include <string.h>
 #include <vector>
@@ -29,6 +31,7 @@ public:
   void SetModuleWidth(G4double ModuleWidth) { fModuleWidth = ModuleWidth; }
 
   G4ThreeVector GetOrigin(G4int i);
+  G4RotationMatrix* GetRM(G4int i);
   G4double GetX(G4int i);
   G4double GetY(G4int i);
   G4double GetZ(G4int i);

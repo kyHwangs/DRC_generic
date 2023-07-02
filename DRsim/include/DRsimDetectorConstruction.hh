@@ -15,6 +15,7 @@
 #include "G4VisAttributes.hh"
 #include "G4GenericMessenger.hh"
 #include "G4FieldManager.hh"
+#include "G4SubtractionSolid.hh"
 #include "G4ThreeVector.hh"
 
 #include "dimensionCalc.hh"
@@ -42,13 +43,32 @@ private:
   G4Material* FindMaterial(G4String matName) { return fMaterials->GetMaterial(matName); }
   G4OpticalSurface* FindSurface(G4String surfName) { return fMaterials->GetOpticalSurface(surfName); }
 
-  void ModuleBuild(G4LogicalVolume* ModuleLogical_[], G4LogicalVolume* PMTGLogical_[], G4LogicalVolume* PMTfilterLogical_[], G4LogicalVolume* PMTcellLogical_[], G4LogicalVolume* PMTcathLogical_[],
+  void ModuleBuild(G4LogicalVolume* ModuleLogical_[], 
+                    G4LogicalVolume* PMTGLogical_[], 
+                    G4LogicalVolume* PMTfilterLogical_[], 
+                    G4LogicalVolume* PMTcellLogical_[], 
+                    G4LogicalVolume* PMTcathLogical_[],
                     G4LogicalVolume* ReflectorMirrorLogical_[],
-                    std::vector<G4LogicalVolume*> fiberUnitIntersection_[], std::vector<G4LogicalVolume*> fiberCladIntersection_[], std::vector<G4LogicalVolume*> fiberCoreIntersection_[], 
+                    std::vector<G4LogicalVolume*> fiberUnitIntersection_[], 
+                    std::vector<G4LogicalVolume*> fiberCladIntersection_[], 
+                    std::vector<G4LogicalVolume*> fiberCoreIntersection_[], 
                     std::vector<DRsimInterface::DRsimModuleProperty>& towerProps_);
 
-  void FiberImplement(G4int i, G4LogicalVolume* ModuleLogical__[], 
-                   std::vector<G4LogicalVolume*> fiberUnitIntersection__[], std::vector<G4LogicalVolume*> fiberCladIntersection__[], std::vector<G4LogicalVolume*> fiberCoreIntersection__[]);
+  void FiberImplement(G4int i, 
+                      G4LogicalVolume* ModuleLogical__[], 
+                      std::vector<G4LogicalVolume*> fiberUnitIntersection__[], 
+                      std::vector<G4LogicalVolume*> fiberCladIntersection__[], 
+                      std::vector<G4LogicalVolume*> fiberCoreIntersection__[]);
+
+  void FiberImplementSingle(G4LogicalVolume* ModuleLogical__[], 
+                            G4VSolid* fModuleSolid__[],
+                            std::vector<float> fModuleWidth,
+                            std::vector<float> fModuleHeight,
+                            std::vector<float> fModuleDepth,
+                            std::vector<G4LogicalVolume*> fiberUnitIntersection__[], 
+                            std::vector<G4LogicalVolume*> fiberCladIntersection__[], 
+                            std::vector<G4LogicalVolume*> fiberCoreIntersection__[]);
+
 
   G4bool checkOverlaps;
   G4GenericMessenger* fMessenger;
@@ -79,6 +99,7 @@ private:
   G4bool doFiber;
   G4bool doReflector;
   G4bool doPMT;
+  G4bool doPlace;
 
   dimensionCalc* dimCalc;
 
@@ -99,6 +120,7 @@ private:
   G4VSolid* tfiberCoreIntersection;
 
   G4LogicalVolume* ModuleLogical[100];
+  G4VSolid* fModuleSolid[100];
 
   G4LogicalVolume* PMTGLogical[100];
   G4LogicalVolume* PMTcathLogical[100];
