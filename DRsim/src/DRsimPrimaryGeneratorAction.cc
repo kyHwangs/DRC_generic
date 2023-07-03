@@ -89,7 +89,7 @@ void DRsimPrimaryGeneratorAction::GeneratePrimaries(G4Event* event) {
 
   G4double x = (G4UniformRand()-0.5)*fRandX + fX_0;
   G4double y = (G4UniformRand()-0.5)*fRandY + fY_0;
-  G4double z = -10 *cm;
+  G4double z = -300 *cm;
   fOrg.set(x,y,z);
 
   fParticleGun->SetParticlePosition(fOrg); // http://www.apc.univ-paris7.fr/~franco/g4doxy/html/classG4VPrimaryGenerator.html
